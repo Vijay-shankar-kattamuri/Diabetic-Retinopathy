@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Prediction</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+    margin-top: 50px;
+   
+}
+#imagePreview {
+    max-width: 100%;
+    max-height: 300px;
+}
+
+h1{
+    color: skyblue;
+    font-size: 3rem;
+    
+}
+.head{
+    margin-bottom: 50px;
+    display: block;
+}
+body{
+    background-image: url('../static/ee.jpg');
+    background-repeat: no-repeat;
+    background-size: 100rem;
+}
+.form-group{
+    margin-top: 100px;
+}
+    </style>
+   
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="head"><h1 class="text-center mb-4">Diabetic Retinopathy Detection</h1></div>
+                <input type="file" name="image" accept="image/*" onchange="loadFile(event)" class="main-button-slider" />
+                <img src="https://pngtree.com/freepng/vector-cloud-upload-icon_3778044.png" id="imagePreview"/>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-block" id="predictBtn" onclick="predictImage()">Predict</button>
+                </div>
+     
+                <div id="predictionResult" class="text-center pred"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function loadFile(event) {
+            var image = document.getElementById("imagePreview");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function predictImage() {
+            var formData = new FormData();
+            var fileInput = document.querySelector('input[type="file"]');
+            formData.append('image', fileInput.files[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    document.getElementById("predictionResult").innerHTML = response.prediction;
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

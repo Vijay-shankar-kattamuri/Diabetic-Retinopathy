@@ -1,0 +1,25 @@
+.container {
+    margin-top: 50px;
+   
+}
+#imagePreview {
+    max-width: 100%;
+    max-height: 300px;
+}
+
+h1{
+    color: black;
+    font-size: 5rem;
+    
+}
+.head{
+    margin-bottom: 150px;
+}
+body{
+    background-image: url(./ee.jpg);
+    background-repeat: no-repeat;
+    background-size: 100rem;
+}
+.form-group{
+    margin-top: 50px;
+}
